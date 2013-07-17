@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<arquillian xmlns="http://jboss.org/schema/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian
+    http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <!-- Container configuration -->
+    <!-- Since more then one container adapter is on classpath, you have to specify
+        adapterImplClass for each container manually. -->
+    <group qualifier="containers" default="true">
+        <container qualifier="android" default="true">
+            <configuration>
+                <!-- Name of Android container to start or use during tests. This property is filtered
+                    meaning it is set in profile in pom.xml under the same name of the property. -->
+                <!--<property name="avdName">test01</property>-->
+                <property name="serialId">3233E8EDB21700EC</property>
+                <!-- Everything sent to host port is forwarded to guest port and vice versa.
+                    It matches remoteAddress in webdriver extension. -->
+                <property name="droneHostPort">8080</property>
+                <property name="droneGuestPort">8080</property>
+                <property name="adapterImplClass">org.arquillian.droidium.container.AndroidDeployableContainer</property>
+            </configuration>
+        </container>
+
+        <!-- Configuration of JBoss AS container adapter. -->
+        <container qualifier="jbossas">
+            <configuration>
+                <property name="javaVmArguments">-Djboss.socket.binding.port-offset=100 -Djboss.management.native.port=9054 -Djboss.bind.address=10.200.136.139 -Xmx512m -XX:MaxPermSize=128m</property>
+                <property name="httpPort">8180</property>
+                <property name="managementPort">9154</property>
+                <property name="jbossHome">${basedir}/target/jboss-as-7.1.1.Final</property>
+                <property name="adapterImplClass">org.jboss.as.arquillian.container.managed.ManagedDeployableContainer</property>
+            </configuration>
+        </container>
+
+    </group>
+
+    <!-- Support for Arquillian Droidium Native extension
+        for testing native Android applications via Selendroid -->
+    <extension qualifier="droidium-native">
+        <!-- path you your selendroid-server.apk -->
+        <property name="serverApk">selendroid-server-0.4.2.apk</property>
+    </extension>
+    <!-- Support for Graphene WebDriver which is injected into test while using Selendroid -->
+    <extension qualifier="webdriver">
+        <property name="browserCapabilities">android</property>
+        <property name="remoteAddress">http://localhost:8080/wd/hub</property>
+    </extension>
+</arquillian>
