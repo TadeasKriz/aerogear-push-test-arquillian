@@ -81,6 +81,7 @@
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
+                <filtering>true</filtering>
             </testResource>
         </testResources>
 
@@ -129,6 +130,13 @@
                 <dependency>
                     <groupId>org.arquillian.container</groupId>
                     <artifactId>arquillian-droidium-container-depchain</artifactId>
+                    <version>${version.droidium}</version>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.arquillian.extension</groupId>
+                    <artifactId>arquillian-droidium-native-depchain</artifactId>
                     <version>${version.droidium}</version>
                     <type>pom</type>
                     <scope>test</scope>
